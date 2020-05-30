@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Note App in Vue JS</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+</head>
+<body>
+	<div id="wrapper" class="wrapper">
+	<div class="container mt-4">
+		<h3>My Notes</h3>
+		<div class="card card-body" v-if="errorText.length > 0 ">
+			<div class="alert alert-danger">
+				{{errorText}}
+			</div>
+		</div>
+		<div class="card card-body" v-if="successText.length > 0 ">
+			<div class="alert alert-success">
+				{{successText}}
+			</div>
+		</div>
+
+		<div class="card card-body m-2">
+			<div class="row">
+				<div class="col-sm-4">
+					<p>Note Title</p>
+					<input type="text" v-model="title" class="form-control" name="">
+					
+				</div>
+
+				<div class="col-sm-6">
+					<p>Note Description {{description}}</p>
+				<textarea v-model="description" cols="2" rows="2" class="form-control"></textarea>	
+					
+				</div>
+
+				<div class="col-sm-2">
+					<button class="btn btn-success" v-on:click="addnote">Add Note</button>
+
+				</div>
+			</div>
+		</div>
+
+		<div class="card card body mt-3 p-3" v-for="(note,index) in notes">
+			<p> <button v-on:click="deleteNote(index)" class="btn btn-danger mb-2">x</button>  </p>
+			<h3>{{note.title}}</h3>
+			<div>
+				{{note.description}}
+			</div>
+			
+		</div>
+
+		
+	</div>
+	</div>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<script type="text/javascript" src="js/vue.js"></script>
+<script type="text/javascript">
+		var app=new Vue({
+		el: '#wrapper',
+		data:{
+			title:'',
+			description:'',
+			notes:[],
+			errorText:'',
+			successText:'',
+		},
+		mounted(){
+			this.notes.push(
+					 {
+						 'title':'First Title',
+						 'description':'First Description'
+					 },
+					{
+						'title':'Seconed Title',
+						'description':'second  Description'}
+			)
+		},
+			methods:{
+				addnote(){
+				// alert('hi')
+				let title=this.title;
+				let description=this.description;
+				if(title.length > 0  && description.length > 0 ){
+					let singlenote={
+						'title':title,
+						'description':description
+					};
+					this.notes.push(singlenote);
+					this.title="";
+				    this.description="";
+				    this.successText="Note Added",
+				    this.errorText=""
+
+				}else {
+
+					this.errorText="Please all the fields  fill properly",
+					 this.successText=""
+					return ;
+				}
+			},
+			deleteNote(noteIndex){
+				this.notes.splice(noteIndex,1);
+				this.successText="Note Deleted",
+				    this.errorText=""
+
+			}
+
+
+			}
+
+
+	});
+</script>
+
+</body>
+</html>
